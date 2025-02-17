@@ -9,27 +9,14 @@ import kotlinx.coroutines.flow.Flow
 
 class MainRepository(private val localds: LocalDataSource, private val remoteds: RemoteDataSource) {
 
-    /**
-     * Devuelve el último libro publicado online
-     */
-    suspend fun getLastBook(): Book {
-        return remoteds.getLastBook().toLocalEntity()
+    //Devuelve todos los libros online
+    suspend fun getBooks(): List<Book> {
+        return remoteds.getBooks().map { it.toLocalEntity() }
     }
 
-    /**
-     * Devuelve el libro online indicado por el número
-     */
-    suspend fun getBookNum(num: Int): Book {
-        return remoteds.getBook(num).toLocalEntity()
-    }
-
-    /**
-     * Devuelve un libro online aleatorio entre el cero y el último publicado
-     */
+    //Devuelve un libro aleatorio online
     suspend fun getRandomBook(): Book {
-        val num = (0..remoteds.getLastBook().toLocalEntity().num).random()
-        Log.d("REPO", num.toString())
-        return remoteds.getBook(num).toLocalEntity()
+        return remoteds.getRandomBook().toLocalEntity()
     }
 
     /**

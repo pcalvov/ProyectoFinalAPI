@@ -1,6 +1,5 @@
 package com.pabcalvid.proyectofinalapi.data
 
-import android.util.Log
 import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.data.local.LocalDataSource
 import com.pabcalvid.proyectofinalapi.data.remote.RemoteDataSource

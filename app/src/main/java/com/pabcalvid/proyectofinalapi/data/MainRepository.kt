@@ -1,5 +1,6 @@
 package com.pabcalvid.proyectofinalapi.data
 
+import android.util.Log
 import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.data.local.LocalDataSource
 import com.pabcalvid.proyectofinalapi.data.remote.RemoteDataSource
@@ -10,7 +11,13 @@ class MainRepository(private val localds: LocalDataSource, private val remoteds:
 
     //Devuelve todos los libros online
     suspend fun getBooks(): List<Book> {
-        return remoteds.getBooks().map { it.toLocalEntity() }
+        val bookDTOList = remoteds.getBooks()
+        println("📢 API Response: $bookDTOList") // Log para ver qué llega de la API
+
+        val bookList = bookDTOList.map { it.toLocalEntity() }
+        println("📢 Converted Books: $bookList") // Log después de la conversión
+
+        return bookList
     }
 
     //Devuelve un libro aleatorio online

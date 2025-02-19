@@ -5,10 +5,10 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("/books")
+    @GET("en/books")
     suspend fun getBooks(): List<BookDTO>
 
-    @GET("/books/random")
+    @GET("en/books/random")
     suspend fun getRandomBook(): BookDTO
 
 }

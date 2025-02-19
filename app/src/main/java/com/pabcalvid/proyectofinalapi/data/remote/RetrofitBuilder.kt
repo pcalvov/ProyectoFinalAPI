@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val API_BASE_URL = "https://potterapi-fedeperin.vercel.app/en"
+private const val API_BASE_URL = "https://potterapi-fedeperin.vercel.app"
 
 object RetrofitBuilder {
     val apiService: ApiService = getRetrofit().create(ApiService::class.java)

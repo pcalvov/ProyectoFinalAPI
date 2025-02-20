@@ -36,7 +36,7 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
             _uiState.value = ScreenState.Loading
             try {
                 val books = repository.getBooks()
-                _books.value = books ?: emptyList() // Evita que books sea null
+                _books.value = books
                 _uiState.value = ScreenState.SuccessBooks(books)
             } catch (e: Exception) {
                 _uiState.value = ScreenState.Error("No se pudieron cargar los libros. Revisa tu conexión.")
@@ -50,7 +50,7 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
         viewModelScope.launch(handler) {
             val book = repository.getRandomBook()
             _book.value = book
-            _uiState.value = ScreenState.SuccessBook(book) // ✅ Usamos SuccessBook para un solo libro
+            _uiState.value = ScreenState.SuccessBook(book)
         }
     }
 }

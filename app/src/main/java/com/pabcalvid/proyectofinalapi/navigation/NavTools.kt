@@ -27,7 +27,7 @@ fun MainTopBar() {
                 Text(
                     text = "Harry Potter",
                     style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Start,
+                    textAlign = TextAlign.Center,
                 )
             }
         },

@@ -5,6 +5,6 @@ import com.pabcalvid.proyectofinalapi.data.local.Book
 sealed class ScreenState {
     object Loading : ScreenState()
     data class Error(val message: String) : ScreenState()
-    data class SuccessBooks(val books: List<Book>) : ScreenState() // ✅ Para listas de libros
-    data class SuccessBook(val book: Book) : ScreenState() // ✅ Para un solo libro
+    data class SuccessBooks(val books: List<Book>) : ScreenState()
+    data class SuccessBook(val book: Book) : ScreenState()
 }

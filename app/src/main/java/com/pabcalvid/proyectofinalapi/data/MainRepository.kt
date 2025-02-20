@@ -12,11 +12,7 @@ class MainRepository(private val localds: LocalDataSource, private val remoteds:
     //Devuelve todos los libros online
     suspend fun getBooks(): List<Book> {
         val bookDTOList = remoteds.getBooks()
-        println("📢 API Response: $bookDTOList") // Log para ver qué llega de la API
-
         val bookList = bookDTOList.map { it.toLocalEntity() }
-        println("📢 Converted Books: $bookList") // Log después de la conversión
-
         return bookList
     }
 

@@ -17,7 +17,9 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         composable(route = Destinations.MainRoute.route) {
             MainScreen(
                 viewModel = mainViewModel,
-                onList = { navController.navigate(Destinations.BookRoute.route) }
+                onBooks = { navController.navigate(Destinations.BookRoute.route) },
+                onCharacters = { /* Agrega la navegación a personajes aquí */ },
+                onHouses = { /* Agrega la navegación a casas aquí */ }
             )
         }
 

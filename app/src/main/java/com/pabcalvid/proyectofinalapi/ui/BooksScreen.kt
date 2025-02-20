@@ -1,25 +1,35 @@
 package com.pabcalvid.proyectofinalapi.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun BooksScreen(viewModel: ViewModel, onBack: () -> Unit) {
+fun BooksScreen(
+    viewModel: ViewModel,
+    onBookClick: (Int) -> Unit,
+    onRandomBookClick: (Book) -> Unit,
+    onBack: () -> Unit
+) {
     val books by viewModel.books.collectAsState()
+    val randomBook by viewModel.randomBook.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getBooks()
+    }
+
+    LaunchedEffect(randomBook) {
+        randomBook?.let { onRandomBookClick(it) }
     }
 
     Column(
@@ -33,6 +43,15 @@ fun BooksScreen(viewModel: ViewModel, onBack: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        Button(
+            onClick = { viewModel.getRandomBook() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Mostrar libro aleatorio")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         if (books.isEmpty()) {
             Text(
                 "Cargando libros...",
@@ -43,7 +62,7 @@ fun BooksScreen(viewModel: ViewModel, onBack: () -> Unit) {
                 modifier = Modifier.weight(1f)
             ) {
                 items(books) { book ->
-                    BookItem(book)
+                    BookItem(book, onBookClick)
                 }
             }
         }
@@ -59,11 +78,12 @@ fun BooksScreen(viewModel: ViewModel, onBack: () -> Unit) {
 }
 
 @Composable
-fun BookItem(book: Book) {
+fun BookItem(book: Book, onBookClick: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { onBookClick(book.index) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

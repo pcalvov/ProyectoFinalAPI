@@ -1,6 +1,9 @@
 package com.pabcalvid.proyectofinalapi.navigation
 
 sealed class Destinations(val route: String) {
-    object MainRoute : Destinations(route = "main_screen")
-    object BookRoute : Destinations(route = "book_screen")
+    object MainRoute : Destinations("main")
+    object BookRoute : Destinations("books")
+    object BookDetailsRoute : Destinations("bookDetails/{bookIndex}") {
+        fun createRoute(bookIndex: Int) = "bookDetails/$bookIndex"
+    }
 }

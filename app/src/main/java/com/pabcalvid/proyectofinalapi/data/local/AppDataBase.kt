@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.*
 
 @Database(entities = [Book::class, Character::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)  // ✅ Asegura que se usa correctamente
+@TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun bookDao(): BookDao
     abstract fun characterDao(): CharacterDao

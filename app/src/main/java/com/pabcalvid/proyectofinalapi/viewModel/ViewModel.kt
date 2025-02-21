@@ -54,4 +54,8 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
             }
         }
     }
+
+    fun clearRandomBook() {
+        _randomBook.value = null
+    }
 }

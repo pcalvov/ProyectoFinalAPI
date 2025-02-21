@@ -29,8 +29,12 @@ fun BooksScreen(
     }
 
     LaunchedEffect(randomBook) {
-        randomBook?.let { onRandomBookClick(it) }
+        randomBook?.let {
+            onRandomBookClick(it)
+            viewModel.clearRandomBook()
+        }
     }
+
 
     Column(
         modifier = Modifier

@@ -35,7 +35,6 @@ fun BooksScreen(
         }
     }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()

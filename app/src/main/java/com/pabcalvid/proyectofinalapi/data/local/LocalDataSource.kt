@@ -22,4 +22,16 @@ class LocalDataSource(applicationContext: Context) {
         db.bookDao().delete(book)
     }
 
+    suspend fun getAllCharacters(): Flow<List<Character>> {
+        return db.characterDao().getAll().stateIn(GlobalScope)
+    }
+
+    suspend fun insertCharacter(character: Character) {
+        val result = db.characterDao().insert(character)
+        Log.d("LOCALDS", "Resultado: $result")
+    }
+
+    suspend fun deleteCharacter(character: Character) {
+        db.characterDao().delete(character)
+    }
 }

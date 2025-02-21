@@ -6,4 +6,7 @@ class RemoteDataSource(private val apiService: ApiService) {
 
     suspend fun getRandomBook() = apiService.getRandomBook()
 
+    suspend fun getCharacters() = apiService.getCharacters()
+
+    suspend fun getRandomCharacter() = apiService.getRandomCharacter()
 }

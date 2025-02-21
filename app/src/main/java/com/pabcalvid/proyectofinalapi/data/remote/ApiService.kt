@@ -11,4 +11,9 @@ interface ApiService {
     @GET("/en/books/random")
     suspend fun getRandomBook(): BookDTO
 
+    @GET("/en/characters")
+    suspend fun getCharacters(): List<CharacterDTO>
+
+    @GET("/en/characters/random")
+    suspend fun getRandomCharacter(): CharacterDTO
 }

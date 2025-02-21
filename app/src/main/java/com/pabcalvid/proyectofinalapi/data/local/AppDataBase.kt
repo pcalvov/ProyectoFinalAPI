@@ -1,13 +1,13 @@
 package com.pabcalvid.proyectofinalapi.data.local
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 
-@Database(entities = [Book::class], version = 1, exportSchema = false)
+@Database(entities = [Book::class, Character::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)  // ✅ Asegura que se usa correctamente
 abstract class AppDataBase : RoomDatabase() {
     abstract fun bookDao(): BookDao
+    abstract fun characterDao(): CharacterDao
 
     companion object {
         @Volatile
@@ -15,11 +15,12 @@ abstract class AppDataBase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDataBase {
             return Instance ?: synchronized(this) {
-                Room
-                    .databaseBuilder(context, AppDataBase::class.java, "bookshpdb.sql")
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDataBase::class.java, "HarryPotterdb.sql"
+                )
                     .build()
                     .also { Instance = it }
-
             }
         }
     }

@@ -6,8 +6,14 @@ sealed class Destinations(val route: String) {
     object BookDetailsRoute : Destinations("bookDetails/{bookIndex}") {
         fun createRoute(bookIndex: Int) = "bookDetails/$bookIndex"
     }
+
     object CharacterRoute : Destinations("characters")
     object CharacterDetailsRoute : Destinations("characterDetails/{characterIndex}") {
         fun createRoute(characterIndex: Int) = "characterDetails/$characterIndex"
+    }
+
+    object HouseRoute : Destinations("houses")
+    object HouseDetailsRoute : Destinations("houseDetails/{houseIndex}") {
+        fun createRoute(houseIndex: Int) = "houseDetails/$houseIndex"
     }
 }

@@ -2,6 +2,7 @@ package com.pabcalvid.proyectofinalapi.ui.util
 
 import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.data.local.Character
+import com.pabcalvid.proyectofinalapi.data.local.House
 
 sealed class ScreenState {
     object Loading : ScreenState()
@@ -14,4 +15,8 @@ sealed class ScreenState {
     // Estados para personajes
     data class SuccessCharacters(val characters: List<Character>) : ScreenState()
     data class SuccessCharacter(val character: Character) : ScreenState()
+
+    // Estados para casas
+    data class SuccessHouses(val houses: List<House>) : ScreenState()
+    data class SuccessHouse(val house: House) : ScreenState()
 }

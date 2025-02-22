@@ -14,17 +14,17 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         navController = navController,
         startDestination = Destinations.MainRoute.route,
     ) {
-        //Pantalla principal
+        // Pantalla principal
         composable(route = Destinations.MainRoute.route) {
             MainScreen(
                 viewModel = mainViewModel,
                 onBooks = { navController.navigate(Destinations.BookRoute.route) },
                 onCharacters = { navController.navigate(Destinations.CharacterRoute.route) },
-                onHouses = { /* Agregar la navegación a casas aquí */ }
+                onHouses = { navController.navigate(Destinations.HouseRoute.route) } // Ahora navega a HousesScreen
             )
         }
 
-        //Pantalla de lista de libros
+        // Pantalla de lista de libros
         composable(route = Destinations.BookRoute.route) {
             BooksScreen(
                 viewModel = mainViewModel,
@@ -40,7 +40,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             )
         }
 
-        //Pantalla de detalles de un libro
+        // Pantalla de detalles de un libro
         composable(
             route = Destinations.BookDetailsRoute.route,
             arguments = listOf(navArgument("bookIndex") { defaultValue = -1 })
@@ -56,7 +56,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             }
         }
 
-        //Pantalla de lista de personajes
+        // Pantalla de lista de personajes
         composable(route = Destinations.CharacterRoute.route) {
             CharacterScreen(
                 viewModel = mainViewModel,
@@ -72,7 +72,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             )
         }
 
-        //Pantalla de detalles de un personaje
+        // Pantalla de detalles de un personaje
         composable(
             route = Destinations.CharacterDetailsRoute.route,
             arguments = listOf(navArgument("characterIndex") { defaultValue = -1 })
@@ -83,6 +83,38 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             if (character != null) {
                 CharacterDetailsScreen(
                     character = character,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+        }
+
+        // NUEVA: Pantalla de lista de casas
+        composable(route = Destinations.HouseRoute.route) {
+            HousesScreen(
+                viewModel = mainViewModel,
+                onHouseClick = { houseIndex ->
+                    if (houseIndex != -1) {
+                        navController.navigate(Destinations.HouseDetailsRoute.createRoute(houseIndex))
+                    }
+                },
+                onRandomHouseClick = { house ->
+                    navController.navigate(Destinations.HouseDetailsRoute.createRoute(house.index))
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // NUEVA: Pantalla de detalles de una casa
+        composable(
+            route = Destinations.HouseDetailsRoute.route,
+            arguments = listOf(navArgument("houseIndex") { defaultValue = -1 })
+        ) { backStackEntry ->
+            val houseIndex = backStackEntry.arguments?.getInt("houseIndex") ?: -1
+            val house = mainViewModel.getHouseByIndex(houseIndex)
+
+            if (house != null) {
+                HouseDetailsScreen(
+                    house = house,
                     onBack = { navController.popBackStack() }
                 )
             }

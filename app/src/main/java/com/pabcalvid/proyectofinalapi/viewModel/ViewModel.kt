@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.pabcalvid.proyectofinalapi.data.MainRepository
 import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.data.local.Character
+import com.pabcalvid.proyectofinalapi.data.local.House
 import com.pabcalvid.proyectofinalapi.ui.util.ScreenState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,13 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
 
     private val _randomCharacter: MutableStateFlow<Character?> = MutableStateFlow(null)
     val randomCharacter: StateFlow<Character?> = _randomCharacter.asStateFlow()
+
+    // Casas
+    private val _houses: MutableStateFlow<List<House>> = MutableStateFlow(emptyList())
+    val houses: StateFlow<List<House>> = _houses.asStateFlow()
+
+    private val _randomHouse: MutableStateFlow<House?> = MutableStateFlow(null)
+    val randomHouse: StateFlow<House?> = _randomHouse.asStateFlow()
 
     // Estado de la UI
     private val _uiState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.Loading)
@@ -105,5 +113,39 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
 
     fun clearRandomCharacter() {
         _randomCharacter.value = null
+    }
+
+    // Obtener lista de casas
+    fun getHouses() {
+        viewModelScope.launch(handler) {
+            _uiState.value = ScreenState.Loading
+            try {
+                val houseList = repository.getHouses()
+                _houses.value = houseList
+                _uiState.value = ScreenState.SuccessHouses(houseList)
+            } catch (e: Exception) {
+                _uiState.value = ScreenState.Error("No se pudieron cargar las casas. Revisa tu conexión.")
+            }
+        }
+    }
+
+    // Obtener casa aleatoria
+    fun getRandomHouse() {
+        viewModelScope.launch(handler) {
+            try {
+                val house = repository.getRandomHouse()
+                _randomHouse.value = house
+            } catch (e: Exception) {
+                _uiState.value = ScreenState.Error("No se pudo obtener una casa aleatoria.")
+            }
+        }
+    }
+
+    fun clearRandomHouse() {
+        _randomHouse.value = null
+    }
+
+    fun getHouseByIndex(index: Int): House? {
+        return houses.value.find { it.index == index }
     }
 }

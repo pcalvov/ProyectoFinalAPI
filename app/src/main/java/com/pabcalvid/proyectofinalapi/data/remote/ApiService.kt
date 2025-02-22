@@ -16,4 +16,10 @@ interface ApiService {
 
     @GET("/en/characters/random")
     suspend fun getRandomCharacter(): CharacterDTO
+
+    @GET("/en/houses")
+    suspend fun getHouses(): List<HouseDTO>
+
+    @GET("/en/houses/random")
+    suspend fun getRandomHouse(): HouseDTO
 }

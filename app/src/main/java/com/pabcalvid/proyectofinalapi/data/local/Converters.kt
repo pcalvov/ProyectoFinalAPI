@@ -9,12 +9,14 @@ class Converters {
 
     @TypeConverter
     fun fromListString(value: List<String>?): String {
-        return gson.toJson(value)
+        return value?.let { gson.toJson(it) } ?: "[]"
     }
 
     @TypeConverter
-    fun toListString(value: String): List<String>? {
-        val listType = object : TypeToken<List<String>>() {}.type
-        return gson.fromJson(value, listType)
+    fun toListString(value: String?): List<String> {
+        return value?.let {
+            val listType = object : TypeToken<List<String>>() {}.type
+            gson.fromJson(it, listType)
+        } ?: emptyList()
     }
 }

@@ -2,36 +2,80 @@ package com.pabcalvid.proyectofinalapi.data.local
 
 import android.content.Context
 import android.util.Log
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.stateIn
 
 class LocalDataSource(applicationContext: Context) {
     private val db: AppDataBase = AppDataBase.getDatabase(applicationContext)
+    private val bookDao = db.bookDao()
+    private val characterDao = db.characterDao()
+    private val houseDao = db.houseDao() // Agregado para manejar casas
 
-    suspend fun getAll(): Flow<List<Book>> {
-        return db.bookDao().getAll().stateIn(GlobalScope)
+    // 📚 Libros 📚
+    fun getAllBooks(): Flow<List<Book>> {
+        return bookDao.getAll()
     }
 
-    fun insert(book: Book) {
-        val result = db.bookDao().insert(book)
-        Log.d("LOCALDS", "Resultado: $result")
+    suspend fun insertBook(book: Book) {
+        try {
+            val result = bookDao.insert(book)
+            Log.d("LocalDataSource", "Insert book result: $result")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error inserting book", e)
+        }
     }
 
-    fun delete(book: Book) {
-        db.bookDao().delete(book)
+    suspend fun deleteBook(book: Book) {
+        try {
+            bookDao.delete(book)
+            Log.d("LocalDataSource", "Book deleted")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error deleting book", e)
+        }
     }
 
-    suspend fun getAllCharacters(): Flow<List<Character>> {
-        return db.characterDao().getAll().stateIn(GlobalScope)
+    // 🧙‍♂️ Personajes 🧙‍♂️
+    fun getAllCharacters(): Flow<List<Character>> {
+        return characterDao.getAll()
     }
 
     suspend fun insertCharacter(character: Character) {
-        val result = db.characterDao().insert(character)
-        Log.d("LOCALDS", "Resultado: $result")
+        try {
+            val result = characterDao.insert(character)
+            Log.d("LocalDataSource", "Insert character result: $result")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error inserting character", e)
+        }
     }
 
     suspend fun deleteCharacter(character: Character) {
-        db.characterDao().delete(character)
+        try {
+            characterDao.delete(character)
+            Log.d("LocalDataSource", "Character deleted")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error deleting character", e)
+        }
+    }
+
+    // 🏰 Casas 🏰
+    fun getAllHouses(): Flow<List<House>> {
+        return houseDao.getAll()
+    }
+
+    suspend fun insertHouse(house: House) {
+        try {
+            val result = houseDao.insert(house)
+            Log.d("LocalDataSource", "Insert house result: $result")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error inserting house", e)
+        }
+    }
+
+    suspend fun deleteHouse(house: House) {
+        try {
+            houseDao.delete(house)
+            Log.d("LocalDataSource", "House deleted")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error deleting house", e)
+        }
     }
 }

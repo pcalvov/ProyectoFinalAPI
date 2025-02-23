@@ -35,8 +35,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
                 },
                 onRandomBookClick = { book ->
                     navController.navigate(Destinations.BookDetailsRoute.createRoute(book.index))
-                },
-                onBack = { navController.popBackStack() }
+                }
             )
         }
 
@@ -51,7 +50,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             if (book != null) {
                 BookDetailsScreen(
                     book = book,
-                    onBack = { navController.popBackStack() }
+                    onFavoriteClick = { mainViewModel.insertFavoriteBook(it) }
                 )
             }
         }
@@ -68,7 +67,6 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
                 onRandomCharacterClick = { character ->
                     navController.navigate(Destinations.CharacterDetailsRoute.createRoute(character.index))
                 },
-                onBack = { navController.popBackStack() }
             )
         }
 
@@ -83,7 +81,6 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             if (character != null) {
                 CharacterDetailsScreen(
                     character = character,
-                    onBack = { navController.popBackStack() }
                 )
             }
         }
@@ -100,7 +97,6 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
                 onRandomHouseClick = { house ->
                     navController.navigate(Destinations.HouseDetailsRoute.createRoute(house.index))
                 },
-                onBack = { navController.popBackStack() }
             )
         }
 
@@ -115,9 +111,16 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             if (house != null) {
                 HouseDetailsScreen(
                     house = house,
-                    onBack = { navController.popBackStack() }
                 )
             }
         }
+
+        composable(route = Destinations.FavoritesRoute.route) {
+            FavoritesBooksScreen(
+                viewModel = mainViewModel,
+                onBookClick = { bookIndex -> navController.navigate(Destinations.BookDetailsRoute.createRoute(bookIndex)) }
+            )
+        }
+
     }
 }

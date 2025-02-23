@@ -20,7 +20,7 @@ abstract class AppDataBase : RoomDatabase() {
                     context.applicationContext,
                     AppDataBase::class.java, "HarryPotterdb.sql"
                 )
-                    .fallbackToDestructiveMigration() // Maneja cambios en la base de datos sin errores
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }
             }

@@ -10,21 +10,15 @@ import coil3.compose.AsyncImage
 import com.pabcalvid.proyectofinalapi.data.local.Book
 
 @Composable
-fun BookDetailsScreen(book: Book, onBack: () -> Unit) {
+fun BookDetailsScreen(book: Book, onFavoriteClick: (Book) -> Unit) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(book.title, style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
 
-        AsyncImage(
-            model = book.cover,
-            contentDescription = "Portada de ${book.title}",
-            modifier = Modifier.size(200.dp)
-        )
+        AsyncImage(model = book.cover, contentDescription = "Portada de ${book.title}", modifier = Modifier.size(200.dp))
         Spacer(modifier = Modifier.height(16.dp))
 
         Text("Título Original: ${book.originalTitle}", style = MaterialTheme.typography.bodyLarge)
@@ -36,8 +30,9 @@ fun BookDetailsScreen(book: Book, onBack: () -> Unit) {
         Text("Número de Páginas: ${book.pages}", style = MaterialTheme.typography.bodyLarge)
 
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onBack) {
-            Text("Volver")
+
+        Button(onClick = { onFavoriteClick(book) }) {
+            Text(if (book.isFavorite) "Quitar de Favoritos" else "Añadir a Favoritos")
         }
     }
 }

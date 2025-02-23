@@ -9,9 +9,9 @@ interface CharacterDao {
     @Query("SELECT * FROM characters")
     fun getAll(): Flow<List<Character>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(character: Character): Long  // ✅ Se agregó `suspend`
+    @Insert
+    suspend fun insert(character: Character)
 
     @Delete
-    suspend fun delete(character: Character)  // ✅ Se agregó `suspend`
+    suspend fun delete(character: Character)
 }

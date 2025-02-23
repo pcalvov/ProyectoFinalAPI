@@ -4,17 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.pabcalvid.proyectofinalapi.data.MainRepository
 import com.pabcalvid.proyectofinalapi.data.local.LocalDataSource
@@ -31,40 +29,52 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyectoFinalAPITheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = { MainTopBar() }) { innerPadding ->
-                    //Aplica el padding de la pantalla a la barra de navegación
-                    Column(Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize()) {
-                        MainApp()
-                    }
-                }
+                MainApp()
             }
         }
     }
 }
 
 @Composable
-fun MainApp(){
+fun MainApp() {
     val navHostController = rememberNavController()
     val remoteDatasource = RemoteDataSource(RetrofitBuilder.apiService)
     val localDatasource = LocalDataSource(LocalContext.current)
     val repository = MainRepository(localDatasource, remoteDatasource)
     val mainViewModel = ViewModel(repository)
 
-    Navigation(navHostController, mainViewModel)
-}
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { MainTopBar() },
+        bottomBar = {
+            BottomAppBar(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    IconButton(onClick = { navHostController.navigate("favorites") }) {
+                        Icon(Icons.Filled.Favorite, contentDescription = "Favoritos")
+                    }
 
-@Preview(showBackground = true)
-@Composable
-fun MainAppPreview() {
-    val navHostController = rememberNavController()
-    val remoteDatasource = RemoteDataSource(RetrofitBuilder.apiService)
-    val localDatasource = LocalDataSource(LocalContext.current)
-    val repository = MainRepository(localDatasource, remoteDatasource)
-    val mainViewModel = ViewModel(repository)
+                    IconButton(onClick = { navHostController.navigate("main") }) {
+                        Icon(Icons.Filled.Home, contentDescription = "Inicio")
+                    }
 
-    Navigation(navHostController, mainViewModel)
+                    IconButton(onClick = { navHostController.popBackStack() }) {
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                    }
+                }
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            Navigation(navHostController, mainViewModel)
+        }
+    }
 }

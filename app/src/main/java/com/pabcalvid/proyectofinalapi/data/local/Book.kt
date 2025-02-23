@@ -15,5 +15,6 @@ data class Book (
     val description: String,
     val pages: Int,
     val cover: String,
-    val index: Int
+    val index: Int,
+    var isFavorite:Boolean = false
 )

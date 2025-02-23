@@ -10,29 +10,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.pabcalvid.proyectofinalapi.data.local.House
+import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun HousesScreen(
-    viewModel: ViewModel,
-    onHouseClick: (Int) -> Unit,
-    onRandomHouseClick: (House) -> Unit
-) {
-    val houses by viewModel.houses.collectAsState()
-    val randomHouse by viewModel.randomHouse.collectAsState()
+fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Int) -> Unit) {
+    val favoriteBooks by viewModel.favoriteBooks.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getHouses()
-    }
-
-    LaunchedEffect(randomHouse) {
-        randomHouse?.let {
-            onRandomHouseClick(it)
-            viewModel.clearRandomHouse()
-        }
+        viewModel.getFavoritesBooks()
     }
 
     Column(
@@ -41,31 +28,25 @@ fun HousesScreen(
             .padding(16.dp)
     ) {
         Text(
-            "Lista de Casas",
+            "Libros Favoritos",
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { viewModel.getRandomHouse() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Mostrar casa aleatoria")
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (houses.isEmpty()) {
+        if (favoriteBooks.isEmpty()) {
             Text(
-                "Cargando casas...",
-                style = MaterialTheme.typography.bodyLarge
+                "No tienes libros favoritos.",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         } else {
             LazyColumn(
                 modifier = Modifier.weight(1f)
             ) {
-                items(houses) { house ->
-                    HouseItem(house, onHouseClick)
+                items(favoriteBooks) { book ->
+                    FavoriteItem(book, onBookClick)
                 }
             }
         }
@@ -73,25 +54,27 @@ fun HousesScreen(
 }
 
 @Composable
-fun HouseItem(house: House, onHouseClick: (Int) -> Unit) {
+fun FavoriteItem(book: Book, onBookClick: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onHouseClick(house.index) },
+            .clickable { onBookClick(book.index) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = house.emoji,
-                fontSize = 32.sp,
-                modifier = Modifier.padding(end = 16.dp)
+            AsyncImage(
+                model = book.cover,
+                contentDescription = "Portada de ${book.title}",
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(end = 16.dp)
             )
             Column {
-                Text(house.house, style = MaterialTheme.typography.bodyLarge)
+                Text(book.title, style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Fundador: ${house.founder}", style = MaterialTheme.typography.bodyMedium)
+                Text("Páginas: ${book.pages}", style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

@@ -8,6 +8,7 @@ import com.pabcalvid.proyectofinalapi.data.local.Character
 import com.pabcalvid.proyectofinalapi.data.local.House
 import com.pabcalvid.proyectofinalapi.ui.util.ScreenState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +22,9 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
 
     private val _randomBook: MutableStateFlow<Book?> = MutableStateFlow(null)
     val randomBook: StateFlow<Book?> = _randomBook.asStateFlow()
+
+    private val _favoriteBooks: MutableStateFlow<List<Book>> = MutableStateFlow(emptyList())
+    val favoriteBooks: StateFlow<List<Book>> = _favoriteBooks.asStateFlow()
 
     // Personajes
     private val _characters: MutableStateFlow<List<Character>> = MutableStateFlow(emptyList())
@@ -78,6 +82,21 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
 
     fun clearRandomBook() {
         _randomBook.value = null
+    }
+
+    fun insertFavoriteBook(book: Book) {
+        viewModelScope.launch(Dispatchers.IO) {
+            book.isFavorite = true
+            repository.insertLocalBook(book)
+        }
+    }
+
+    fun getFavoritesBooks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getLocalBooks().collect(){
+                _favoriteBooks.value = it
+            }
+        }
     }
 
     // Obtener lista de personajes

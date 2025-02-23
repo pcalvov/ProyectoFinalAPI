@@ -13,7 +13,7 @@ interface HouseDao {
     @Query("SELECT * FROM houses")
     fun getAll(): Flow<List<House>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insert(house: House): Long
 
     @Delete

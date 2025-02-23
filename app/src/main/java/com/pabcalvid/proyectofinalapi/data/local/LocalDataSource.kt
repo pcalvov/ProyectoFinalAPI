@@ -10,30 +10,20 @@ class LocalDataSource(applicationContext: Context) {
     private val characterDao = db.characterDao()
     private val houseDao = db.houseDao() // Agregado para manejar casas
 
-    // 📚 Libros 📚
+    //Libros
     fun getAllBooks(): Flow<List<Book>> {
         return bookDao.getAll()
     }
 
     suspend fun insertBook(book: Book) {
-        try {
-            val result = bookDao.insert(book)
-            Log.d("LocalDataSource", "Insert book result: $result")
-        } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error inserting book", e)
-        }
+        bookDao.insert(book)
     }
 
     suspend fun deleteBook(book: Book) {
-        try {
-            bookDao.delete(book)
-            Log.d("LocalDataSource", "Book deleted")
-        } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error deleting book", e)
-        }
+        bookDao.delete(book)
     }
 
-    // 🧙‍♂️ Personajes 🧙‍♂️
+    //Personajes ️
     fun getAllCharacters(): Flow<List<Character>> {
         return characterDao.getAll()
     }
@@ -56,7 +46,7 @@ class LocalDataSource(applicationContext: Context) {
         }
     }
 
-    // 🏰 Casas 🏰
+    //Casas
     fun getAllHouses(): Flow<List<House>> {
         return houseDao.getAll()
     }

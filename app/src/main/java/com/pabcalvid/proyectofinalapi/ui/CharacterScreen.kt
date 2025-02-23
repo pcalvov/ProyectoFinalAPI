@@ -18,8 +18,7 @@ import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 fun CharacterScreen(
     viewModel: ViewModel,
     onCharacterClick: (Int) -> Unit,
-    onRandomCharacterClick: (Character) -> Unit,
-    onBack: () -> Unit
+    onRandomCharacterClick: (Character) -> Unit
 ) {
     val characters by viewModel.characters.collectAsState()
     val randomCharacter by viewModel.randomCharacter.collectAsState()
@@ -68,14 +67,6 @@ fun CharacterScreen(
                     CharacterItem(character, onCharacterClick)
                 }
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Volver")
         }
     }
 }

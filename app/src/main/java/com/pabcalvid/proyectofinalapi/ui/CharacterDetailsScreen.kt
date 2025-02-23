@@ -10,7 +10,7 @@ import coil3.compose.AsyncImage
 import com.pabcalvid.proyectofinalapi.data.local.Character
 
 @Composable
-fun CharacterDetailsScreen(character: Character, onBack: () -> Unit) {
+fun CharacterDetailsScreen(character: Character) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,10 +46,5 @@ fun CharacterDetailsScreen(character: Character, onBack: () -> Unit) {
         }
 
         Text("Fecha de Nacimiento: ${character.birthdate}", style = MaterialTheme.typography.bodyLarge)
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onBack) {
-            Text("Volver")
-        }
     }
 }

@@ -9,7 +9,7 @@ class MainRepository(
     private val remoteds: RemoteDataSource
 ) {
 
-    // 📚 Libros 📚
+    //Libros
 
     suspend fun getBooks(): List<Book> {
         return try {
@@ -35,7 +35,7 @@ class MainRepository(
         localds.deleteBook(book)
     }
 
-    // 🧙‍♂️ Personajes 🧙‍♂️
+    //Personajes
 
     suspend fun getCharacters(): List<Character> {
         return try {
@@ -61,7 +61,7 @@ class MainRepository(
         localds.deleteCharacter(character)
     }
 
-    // 🏰 Casas 🏰
+    //Casas
 
     suspend fun getHouses(): List<House> {
         return try {

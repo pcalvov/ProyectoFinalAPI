@@ -16,4 +16,7 @@ sealed class Destinations(val route: String) {
     object HouseDetailsRoute : Destinations("houseDetails/{houseIndex}") {
         fun createRoute(houseIndex: Int) = "houseDetails/$houseIndex"
     }
+
+    // 📌 Nueva ruta para favoritos
+    object FavoritesRoute : Destinations("favorites")
 }

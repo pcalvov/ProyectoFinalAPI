@@ -13,12 +13,12 @@ interface BookDao {
     @Query("SELECT * FROM books")
     fun getAll(): Flow<List<Book>>
 
-    @Query("SELECT * FROM books WHERE num = (SELECT MAX(num) FROM books)")
-    fun getLast(): Book
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(book: Book): Long
+    fun insert(book: Book)
 
     @Delete
     fun delete(book: Book)
+
+    @Query("UPDATE books SET isFavorite = :isFavorite WHERE num = :num")
+    fun updateFavoriteStatus(num: Int, isFavorite: Boolean)
 }

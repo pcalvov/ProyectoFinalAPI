@@ -6,11 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.pabcalvid.proyectofinalapi.data.local.House
 
 @Composable
-fun HouseDetailsScreen(house: House, onBack: () -> Unit) {
+fun HouseDetailsScreen(house: House) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -20,11 +21,11 @@ fun HouseDetailsScreen(house: House, onBack: () -> Unit) {
         Text(house.house, style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
 
-        AsyncImage(
-            model = house.emoji, // Puedes cambiar a una imagen si tienes URLs de escudos
-            contentDescription = "Escudo de ${house.house}",
-            modifier = Modifier.size(100.dp)
+        Text(
+            text = house.emoji,
+            fontSize = 48.sp
         )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Text("Fundador: ${house.founder}", style = MaterialTheme.typography.bodyLarge)
@@ -32,10 +33,5 @@ fun HouseDetailsScreen(house: House, onBack: () -> Unit) {
         Text("Colores: ${house.colors.joinToString(", ")}", style = MaterialTheme.typography.bodyLarge)
         Spacer(modifier = Modifier.height(16.dp))
         Text("Animal Representativo: ${house.animal}", style = MaterialTheme.typography.bodyLarge)
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onBack) {
-            Text("Volver")
-        }
     }
 }

@@ -18,8 +18,7 @@ import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 fun BooksScreen(
     viewModel: ViewModel,
     onBookClick: (Int) -> Unit,
-    onRandomBookClick: (Book) -> Unit,
-    onBack: () -> Unit
+    onRandomBookClick: (Book) -> Unit
 ) {
     val books by viewModel.books.collectAsState()
     val randomBook by viewModel.randomBook.collectAsState()
@@ -68,14 +67,6 @@ fun BooksScreen(
                     BookItem(book, onBookClick)
                 }
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Volver")
         }
     }
 }

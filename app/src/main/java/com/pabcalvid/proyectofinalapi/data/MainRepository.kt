@@ -19,20 +19,26 @@ class MainRepository(
         }
     }
 
+    fun getAllBooks(): Flow<List<Book>> {
+        return localds.getAllBooks()
+    }
+
     suspend fun getRandomBook(): Book {
         return remoteds.getRandomBook().toLocalEntity()
     }
 
-    suspend fun getLocalBooks(): Flow<List<Book>> {
-        return localds.getAllBooks()
-    }
-
     suspend fun insertLocalBook(book: Book) {
+        book.isFavorite = true
         localds.insertBook(book)
     }
 
     suspend fun deleteLocalBook(book: Book) {
+        book.isFavorite = false
         localds.deleteBook(book)
+    }
+
+    suspend fun updateFavoriteStatus(num: Int, isFavorite: Boolean) {
+        localds.updateFavoriteStatus(num, isFavorite)
     }
 
     //Personajes

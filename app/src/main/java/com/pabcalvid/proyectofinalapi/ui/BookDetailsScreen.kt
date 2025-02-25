@@ -1,19 +1,25 @@
-package com.pabcalvid.proyectofinalapi.ui
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.pabcalvid.proyectofinalapi.data.local.Book
+import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun BookDetailsScreen(book: Book, onFavoriteClick: (Book) -> Unit) {
+fun BookDetailsScreen(book: Book, viewModel: ViewModel) {
+    // Obtenemos el estado del libro favorito desde la base de datos
+    val favoriteBooks by viewModel.favoriteBooks.collectAsState()
+    val isFavorite = remember { derivedStateOf { favoriteBooks.any { it.index == book.index } } }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,11 +44,15 @@ fun BookDetailsScreen(book: Book, onFavoriteClick: (Book) -> Unit) {
         Text("Descripción: ${book.description}", style = MaterialTheme.typography.bodyLarge)
         Spacer(modifier = Modifier.height(8.dp))
         Text("Número de Páginas: ${book.pages}", style = MaterialTheme.typography.bodyLarge)
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { onFavoriteClick(book) }) {
-            Text(if (book.isFavorite) "Quitar de Favoritos" else "Añadir a Favoritos")
+        // Botón de favorito
+        IconButton(onClick = { viewModel.toggleFavoriteBook(book) }) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = "Favorito",
+                tint = if (isFavorite.value) Color.Red else Color.Gray
+            )
         }
     }
 }

@@ -5,8 +5,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "books", indices = [Index(value = ["index"], unique = true)])
-
-data class Book (
+data class Book(
     @PrimaryKey(autoGenerate = true) val id: Int?,
     val num: Int,
     val title: String,
@@ -16,5 +15,5 @@ data class Book (
     val pages: Int,
     val cover: String,
     val index: Int,
-    var isFavorite:Boolean = false
+    var isFavorite: Boolean = false
 )

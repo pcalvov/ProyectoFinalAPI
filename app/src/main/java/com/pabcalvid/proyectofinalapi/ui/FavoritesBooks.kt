@@ -15,7 +15,7 @@ import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Int) -> Unit) {
+fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Book) -> Unit) {
     val favoriteBooks by viewModel.favoriteBooks.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -54,12 +54,12 @@ fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Int) -> Unit) {
 }
 
 @Composable
-fun FavoriteItem(book: Book, onBookClick: (Int) -> Unit) {
+fun FavoriteItem(book: Book, onBookClick: (Book) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onBookClick(book.index) },
+            .clickable { onBookClick(book) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

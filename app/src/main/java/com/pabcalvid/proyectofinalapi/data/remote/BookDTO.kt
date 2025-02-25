@@ -14,15 +14,15 @@ data class BookDTO(
     @SerializedName("index") val index: Int
 )
 
-fun BookDTO.toLocalEntity() =
-    Book(
-        id = null,
-        num = num,
-        title = title,
-        originalTitle = originalTitle,
-        releaseDate = releaseDate,
-        description = description,
-        pages = pages,
-        cover = cover,
-        index = index
-    )
+fun BookDTO.toLocalEntity() = Book(
+    id = null,
+    num = num,
+    title = title,
+    originalTitle = originalTitle,
+    releaseDate = releaseDate,
+    description = description,
+    pages = pages,
+    cover = cover,
+    index = index,
+    isFavorite = false
+)

@@ -49,6 +49,10 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
             ScreenState.Error("Error, revise su conexión a internet o inténtelo de nuevo más tarde")
     }
 
+    init {
+        getFavoritesBooks()
+    }
+
     // Obtener lista de libros
     fun getBooks() {
         viewModelScope.launch(handler) {
@@ -91,11 +95,30 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
-    fun getFavoritesBooks() {
+    fun deleteFavoriteBook(book: Book) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getLocalBooks().collect(){
-                _favoriteBooks.value = it
+            book.isFavorite = false
+            repository.deleteLocalBook(book)
+        }
+    }
+
+    fun getFavoritesBooks() {
+        viewModelScope.launch {
+            repository.getAllBooks().collect { books ->
+                _favoriteBooks.value = books.filter { it.isFavorite }
             }
+        }
+    }
+
+    fun toggleFavoriteBook(book: Book) {
+        viewModelScope.launch {
+            val updatedBook = book.copy(isFavorite = !book.isFavorite)
+            if (updatedBook.isFavorite) {
+                repository.insertLocalBook(updatedBook) // Guardar en BD
+            } else {
+                repository.deleteLocalBook(updatedBook) // Eliminar de BD
+            }
+            getFavoritesBooks() // Refrescar lista
         }
     }
 

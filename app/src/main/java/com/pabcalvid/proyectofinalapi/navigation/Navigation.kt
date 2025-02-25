@@ -1,5 +1,6 @@
 package com.pabcalvid.proyectofinalapi.navigation
 
+import BookDetailsScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -50,7 +51,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
             if (book != null) {
                 BookDetailsScreen(
                     book = book,
-                    onFavoriteClick = { mainViewModel.insertFavoriteBook(it) }
+                    viewModel = mainViewModel
                 )
             }
         }
@@ -118,7 +119,7 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         composable(route = Destinations.FavoritesRoute.route) {
             FavoritesBooksScreen(
                 viewModel = mainViewModel,
-                onBookClick = { bookIndex -> navController.navigate(Destinations.BookDetailsRoute.createRoute(bookIndex)) }
+                onBookClick = { mainViewModel.deleteFavoriteBook(it) }
             )
         }
 

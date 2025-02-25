@@ -8,11 +8,19 @@ class LocalDataSource(applicationContext: Context) {
     private val db: AppDataBase = AppDataBase.getDatabase(applicationContext)
     private val bookDao = db.bookDao()
     private val characterDao = db.characterDao()
-    private val houseDao = db.houseDao() // Agregado para manejar casas
+    private val houseDao = db.houseDao() // Manejo de casas
 
-    //Libros
+    // 📚 **Libros**
     fun getAllBooks(): Flow<List<Book>> {
         return bookDao.getAll()
+    }
+
+    fun getFavorites(): Flow<List<Book>> {
+        return bookDao.getFavorites() // Obtiene solo los libros favoritos
+    }
+
+    fun getBookByNum(num: Int): Flow<Book?> {
+        return bookDao.getBookByNum(num)
     }
 
     suspend fun insertBook(book: Book) {
@@ -23,7 +31,16 @@ class LocalDataSource(applicationContext: Context) {
         bookDao.delete(book)
     }
 
-    //Personajes ️
+    suspend fun updateFavoriteStatus(num: Int, isFavorite: Boolean) {
+        try {
+            bookDao.updateFavoriteStatus(num, isFavorite)
+            Log.d("LocalDataSource", "Libro actualizado como favorito: $isFavorite")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error actualizando favorito del libro", e)
+        }
+    }
+
+    // 🧙 **Personajes**
     fun getAllCharacters(): Flow<List<Character>> {
         return characterDao.getAll()
     }
@@ -46,7 +63,7 @@ class LocalDataSource(applicationContext: Context) {
         }
     }
 
-    //Casas
+    // 🏰 **Casas**
     fun getAllHouses(): Flow<List<House>> {
         return houseDao.getAll()
     }

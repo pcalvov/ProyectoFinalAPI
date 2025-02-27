@@ -85,13 +85,12 @@ fun MainApp() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // Imagen de fondo difuminada
             Image(
-                painter = painterResource(id = R.drawable.hogwarts_ver), // Asegúrate de tener la imagen en res/drawable
+                painter = painterResource(id = R.drawable.hogwarts_ver),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .alpha(0.3f), // Ajusta la opacidad para el efecto difuminado
+                    .alpha(0.3f),
                 contentScale = ContentScale.FillHeight
             )
 

@@ -15,7 +15,6 @@ data class BookDTO(
 )
 
 fun BookDTO.toLocalEntity() = Book(
-    id = null,
     num = num,
     title = title,
     originalTitle = originalTitle,

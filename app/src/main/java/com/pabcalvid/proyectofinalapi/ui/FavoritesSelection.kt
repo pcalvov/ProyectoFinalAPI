@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,13 +15,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
-import coil3.compose.AsyncImage
 import com.pabcalvid.proyectofinalapi.R
 import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun MainScreen(
+fun FavoritesSelectionScreen(
     viewModel: ViewModel,
     onBooks: () -> Unit,
     onCharacters: () -> Unit,
@@ -37,15 +34,16 @@ fun MainScreen(
     ) {
 
         Text(
-            text = "Bienvenido: ",
+            text = "Selecciona la lista de favoritos que deseas ver:",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Yellow
+            color = Color.Black,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
         Spacer(Modifier.size(16.dp))
 
-        ImageButton(
+        ImageButton2(
             imageRes = R.drawable.libros,
             text = "Libros",
             onClick = onBooks
@@ -53,7 +51,7 @@ fun MainScreen(
 
         Spacer(Modifier.size(16.dp))
 
-        ImageButton(
+        ImageButton2(
             imageRes = R.drawable.harry_potter,
             text = "Personajes",
             onClick = onCharacters
@@ -61,7 +59,7 @@ fun MainScreen(
 
         Spacer(Modifier.size(16.dp))
 
-        ImageButton(
+        ImageButton2(
             imageRes = R.drawable.casas,
             text = "Casas",
             onClick = onHouses
@@ -70,7 +68,7 @@ fun MainScreen(
 }
 
 @Composable
-fun ImageButton(imageRes: Int, text: String, onClick: () -> Unit) {
+fun ImageButton2(imageRes: Int, text: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(200.dp)

@@ -28,9 +28,10 @@ fun BooksScreen(
     }
 
     LaunchedEffect(randomBook) {
-        randomBook?.let {
-            onRandomBookClick(it)
-            viewModel.clearRandomBook()
+        randomBook?.let { book ->
+            viewModel.setSelectedBook(book) // Asegurar que el libro se almacene antes de navegar
+            onRandomBookClick(book)
+            viewModel.clearRandomBook() // ❗Ahora se limpia después de la navegación
         }
     }
 
@@ -64,7 +65,7 @@ fun BooksScreen(
                 modifier = Modifier.weight(1f)
             ) {
                 items(books) { book ->
-                    BookItem(book, onBookClick)
+                    BookItem(book, onBookClick = onBookClick, viewModel = viewModel)
                 }
             }
         }
@@ -72,12 +73,15 @@ fun BooksScreen(
 }
 
 @Composable
-fun BookItem(book: Book, onBookClick: (Int) -> Unit) {
+fun BookItem(book: Book, viewModel: ViewModel, onBookClick: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onBookClick(book.index) },
+            .clickable {
+                viewModel.setSelectedBook(book) // 🔥 Asegurar que el ViewModel recibe el libro seleccionado
+                onBookClick(book.index) // Navegar a la pantalla de detalles
+            },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

@@ -1,5 +1,6 @@
 package com.pabcalvid.proyectofinalapi.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -7,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "characters", indices = [Index(value = ["index"], unique = true)])
 
 data class Character(
-    @PrimaryKey(autoGenerate = true) val id: Int?,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val fullName: String,
     val nickname: String,
     val hogwartsHouse: String,
@@ -15,5 +16,6 @@ data class Character(
     val children: List<String>,
     val image: String,
     val birthdate: String,
-    val index: Int
+    val index: Int,
+    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean = false
 )

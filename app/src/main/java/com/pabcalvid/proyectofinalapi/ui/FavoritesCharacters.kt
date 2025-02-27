@@ -1,6 +1,5 @@
 package com.pabcalvid.proyectofinalapi.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,24 +14,11 @@ import com.pabcalvid.proyectofinalapi.data.local.Character
 import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun CharacterScreen(
-    viewModel: ViewModel,
-    onCharacterClick: (String) -> Unit,
-    onRandomCharacterClick: (Character) -> Unit
-) {
-    val characters by viewModel.characters.collectAsState()
-    val randomCharacter by viewModel.randomCharacter.collectAsState()
+fun FavoritesCharactersScreen(viewModel: ViewModel) {
+    val favoriteCharacters by viewModel.favoriteCharacters.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getCharacters()
-    }
-
-    LaunchedEffect(randomCharacter) {
-        randomCharacter?.let { character ->
-            viewModel.setSelectedCharacter(character) // Asegurar que se almacene antes de navegar
-            onRandomCharacterClick(character)
-            viewModel.clearRandomCharacter() // ❗Ahora se limpia después de la navegación
-        }
+        viewModel.getFavoritesCharacters()
     }
 
     Column(
@@ -41,31 +27,25 @@ fun CharacterScreen(
             .padding(16.dp)
     ) {
         Text(
-            "Lista de Personajes",
+            "Personajes Favoritos",
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { viewModel.getRandomCharacter() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Mostrar personaje aleatorio")
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (characters.isEmpty()) {
+        if (favoriteCharacters.isEmpty()) {
             Text(
-                "Cargando personajes...",
-                style = MaterialTheme.typography.bodyLarge
+                "No tienes personajes favoritos.",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         } else {
             LazyColumn(
                 modifier = Modifier.weight(1f)
             ) {
-                items(characters) { character ->
-                    CharacterItem(character, onCharacterClick = onCharacterClick, viewModel = viewModel)
+                items(favoriteCharacters) { character ->
+                    FavoriteCharacterItem(character)
                 }
             }
         }
@@ -73,33 +53,27 @@ fun CharacterScreen(
 }
 
 @Composable
-fun CharacterItem(character: Character, onCharacterClick: (String) -> Unit, viewModel: ViewModel) {
+fun FavoriteCharacterItem(character: Character) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable {
-                viewModel.setSelectedCharacter(character)
-                onCharacterClick(character.nickname)
-            },
+            .padding(vertical = 8.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             AsyncImage(
                 model = character.image,
-                contentDescription = "Imagen de ${character.fullName}",
+                contentDescription = "Imagen de ${character.nickname}",
                 modifier = Modifier
                     .size(100.dp)
                     .padding(end = 16.dp)
             )
             Column {
-                Text(character.fullName, style = MaterialTheme.typography.bodyLarge)
+                Text(character.nickname, style = MaterialTheme.typography.bodyLarge)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("Casa: ${character.hogwartsHouse}", style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
 }
-
-

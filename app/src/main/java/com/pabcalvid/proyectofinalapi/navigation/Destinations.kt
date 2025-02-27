@@ -8,15 +8,23 @@ sealed class Destinations(val route: String) {
     }
 
     object CharacterRoute : Destinations("characters")
-    object CharacterDetailsRoute : Destinations("characterDetails/{characterIndex}") {
-        fun createRoute(characterIndex: Int) = "characterDetails/$characterIndex"
+    object CharacterDetailsRoute: Destinations("character_details/{nickname}") {
+        fun createRoute(nickname: String) = "character_details/$nickname"
     }
 
     object HouseRoute : Destinations("houses")
-    object HouseDetailsRoute : Destinations("houseDetails/{houseIndex}") {
-        fun createRoute(houseIndex: Int) = "houseDetails/$houseIndex"
+    object HouseDetailsRoute : Destinations("houseDetails/{house}") {
+        fun createRoute(house: String) = "houseDetails/$house"
     }
 
     // 📌 Nueva ruta para favoritos
     object FavoritesRoute : Destinations("favorites")
+
+    object FavoritesCharactersRoute : Destinations("favorites_characters")
+
+    object FavoritesHousesRoute : Destinations("favorites_houses")
+
+    object FavoritesSelectionRoute : Destinations("favorites_selection")
+
+
 }

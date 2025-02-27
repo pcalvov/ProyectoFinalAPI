@@ -1,5 +1,6 @@
 package com.pabcalvid.proyectofinalapi.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pabcalvid.proyectofinalapi.data.MainRepository
@@ -26,6 +27,9 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
     private val _favoriteBooks: MutableStateFlow<List<Book>> = MutableStateFlow(emptyList())
     val favoriteBooks: StateFlow<List<Book>> = _favoriteBooks.asStateFlow()
 
+    private val _book = MutableStateFlow<Book?>(null)
+    val book: StateFlow<Book?> = _book.asStateFlow()
+
     // Personajes
     private val _characters: MutableStateFlow<List<Character>> = MutableStateFlow(emptyList())
     val characters: StateFlow<List<Character>> = _characters.asStateFlow()
@@ -33,12 +37,24 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
     private val _randomCharacter: MutableStateFlow<Character?> = MutableStateFlow(null)
     val randomCharacter: StateFlow<Character?> = _randomCharacter.asStateFlow()
 
+    private val _favoriteCharacters: MutableStateFlow<List<Character>> = MutableStateFlow(emptyList())
+    val favoriteCharacters: StateFlow<List<Character>> = _favoriteCharacters.asStateFlow()
+
+    private val _character = MutableStateFlow<Character?>(null)
+    val character: StateFlow<Character?> = _character.asStateFlow()
+
     // Casas
     private val _houses: MutableStateFlow<List<House>> = MutableStateFlow(emptyList())
     val houses: StateFlow<List<House>> = _houses.asStateFlow()
 
     private val _randomHouse: MutableStateFlow<House?> = MutableStateFlow(null)
     val randomHouse: StateFlow<House?> = _randomHouse.asStateFlow()
+
+    private val _house = MutableStateFlow<House?>(null)
+    val house: StateFlow<House?> = _house.asStateFlow()
+
+    private val _favoriteHouses: MutableStateFlow<List<House>> = MutableStateFlow(emptyList())
+    val favoriteHouses: StateFlow<List<House>> = _favoriteHouses.asStateFlow()
 
     // Estado de la UI
     private val _uiState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.Loading)
@@ -51,6 +67,13 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
 
     init {
         getFavoritesBooks()
+        getFavoritesCharacters()
+        getFavoritesHouses()
+    }
+
+    fun setSelectedBook(selectedBook: Book) {
+        _book.value = selectedBook
+        Log.d("ViewModel", "Libro seleccionado: ${selectedBook.title}")
     }
 
     // Obtener lista de libros
@@ -88,20 +111,6 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
         _randomBook.value = null
     }
 
-    fun insertFavoriteBook(book: Book) {
-        viewModelScope.launch(Dispatchers.IO) {
-            book.isFavorite = true
-            repository.insertLocalBook(book)
-        }
-    }
-
-    fun deleteFavoriteBook(book: Book) {
-        viewModelScope.launch(Dispatchers.IO) {
-            book.isFavorite = false
-            repository.deleteLocalBook(book)
-        }
-    }
-
     fun getFavoritesBooks() {
         viewModelScope.launch {
             repository.getAllBooks().collect { books ->
@@ -111,14 +120,8 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     fun toggleFavoriteBook(book: Book) {
-        viewModelScope.launch {
-            val updatedBook = book.copy(isFavorite = !book.isFavorite)
-            if (updatedBook.isFavorite) {
-                repository.insertLocalBook(updatedBook) // Guardar en BD
-            } else {
-                repository.deleteLocalBook(updatedBook) // Eliminar de BD
-            }
-            getFavoritesBooks() // Refrescar lista
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.toggleFavoriteBook(book)
         }
     }
 
@@ -137,8 +140,8 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     // Obtener personaje por índice
-    fun getCharacterByIndex(index: Int): Character? {
-        return characters.value.find { it.index == index }
+    fun getCharacterByNickname(nickname: String): Character? {
+        return characters.value.find { it.nickname == nickname }
     }
 
     // Obtener personaje aleatorio
@@ -157,6 +160,25 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
         _randomCharacter.value = null
     }
 
+    fun getFavoritesCharacters() {
+        viewModelScope.launch {
+            repository.getAllCharacters().collect { characters ->
+                _favoriteCharacters.value = characters.filter { it.isFavorite }
+            }
+        }
+    }
+
+    fun toggleFavoriteCharacter(character: Character) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.toggleFavoriteCharacter(character)
+        }
+    }
+
+    fun setSelectedCharacter(selectedCharacter: Character) {
+        _character.value = selectedCharacter
+        Log.d("ViewModel", "Personaje seleccionado: ${selectedCharacter.nickname}")
+    }
+
     // Obtener lista de casas
     fun getHouses() {
         viewModelScope.launch(handler) {
@@ -171,7 +193,12 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
-    // Obtener casa aleatoria
+    // Obtener personaje por índice
+    fun getHouseByHouse(house: String): House? {
+        return houses.value.find { it.house == house }
+    }
+
+    // Obtener personaje aleatorio
     fun getRandomHouse() {
         viewModelScope.launch(handler) {
             try {
@@ -187,7 +214,22 @@ class ViewModel(private val repository: MainRepository) : ViewModel() {
         _randomHouse.value = null
     }
 
-    fun getHouseByIndex(index: Int): House? {
-        return houses.value.find { it.index == index }
+    fun getFavoritesHouses() {
+        viewModelScope.launch {
+            repository.getAllHouses().collect { houses ->
+                _favoriteHouses.value = houses.filter { it.isFavorite }
+            }
+        }
+    }
+
+    fun toggleFavoriteHouse(house: House) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.toggleFavoriteHouse(house)
+        }
+    }
+
+    fun setSelectedHouse(selectedHouse: House) {
+        _house.value = selectedHouse
+        Log.d("ViewModel", "Casa seleccionada: ${selectedHouse.house}")
     }
 }

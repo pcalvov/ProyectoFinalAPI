@@ -27,18 +27,18 @@ class MainRepository(
         return remoteds.getRandomBook().toLocalEntity()
     }
 
-    suspend fun insertLocalBook(book: Book) {
-        book.isFavorite = true
-        localds.insertBook(book)
-    }
+    suspend fun toggleFavoriteBook(book: Book) {
+        val localBook = localds.getBookByNum(book.num)
 
-    suspend fun deleteLocalBook(book: Book) {
-        book.isFavorite = false
-        localds.deleteBook(book)
-    }
-
-    suspend fun updateFavoriteStatus(num: Int, isFavorite: Boolean) {
-        localds.updateFavoriteStatus(num, isFavorite)
+        if (localBook != null) {
+            if (localBook.isFavorite) {
+                localds.deleteBook(localBook)
+            } else {
+                localds.updateFavoriteStatus(localBook.num, true)
+            }
+        } else {
+            localds.insertBook(book.copy(isFavorite = true))
+        }
     }
 
     //Personajes
@@ -55,16 +55,21 @@ class MainRepository(
         return remoteds.getRandomCharacter().toLocalEntity()
     }
 
-    suspend fun getLocalCharacters(): Flow<List<Character>> {
+    fun getAllCharacters(): Flow<List<Character>> {
         return localds.getAllCharacters()
     }
 
-    suspend fun insertLocalCharacter(character: Character) {
-        localds.insertCharacter(character)
-    }
-
-    suspend fun deleteLocalCharacter(character: Character) {
-        localds.deleteCharacter(character)
+    suspend fun toggleFavoriteCharacter(character: Character){
+        val localCharacter = localds.getCharacterByName(character.nickname)
+        if (localCharacter != null) {
+            if (localCharacter.isFavorite) {
+                localds.deleteCharacter(localCharacter)
+            } else {
+                localds.updateFavoriteStatus(localCharacter.nickname, true)
+            }
+        } else {
+            localds.insertCharacter(character.copy(isFavorite = true))
+        }
     }
 
     //Casas
@@ -81,15 +86,20 @@ class MainRepository(
         return remoteds.getRandomHouse().toLocalEntity()
     }
 
-    suspend fun getLocalHouses(): Flow<List<House>> {
+    fun getAllHouses(): Flow<List<House>> {
         return localds.getAllHouses()
     }
 
-    suspend fun insertLocalHouse(house: House) {
-        localds.insertHouse(house)
-    }
-
-    suspend fun deleteLocalHouse(house: House) {
-        localds.deleteHouse(house)
+    suspend fun toggleFavoriteHouse(house: House){
+        val localHouse = localds.getHouseByName(house.house)
+        if (localHouse != null) {
+            if (localHouse.isFavorite) {
+                localds.deleteHouse(localHouse)
+            } else {
+                localds.updateFavoriteStatus2(localHouse.house, true)
+            }
+        } else {
+            localds.insertHouse(house.copy(isFavorite = true))
+        }
     }
 }

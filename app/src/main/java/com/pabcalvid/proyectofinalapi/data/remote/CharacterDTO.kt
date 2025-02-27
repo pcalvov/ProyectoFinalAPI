@@ -16,7 +16,6 @@ data class CharacterDTO(
 
 fun CharacterDTO.toLocalEntity() =
     Character(
-        id = null,
         fullName = fullName,
         nickname = nickname,
         hogwartsHouse = hogwartsHouse,
@@ -24,5 +23,6 @@ fun CharacterDTO.toLocalEntity() =
         children = children,
         image = image,
         birthdate = birthdate,
-        index = index
+        index = index,
+        isFavorite = false
     )

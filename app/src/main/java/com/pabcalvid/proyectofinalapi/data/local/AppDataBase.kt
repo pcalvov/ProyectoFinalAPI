@@ -3,7 +3,7 @@ package com.pabcalvid.proyectofinalapi.data.local
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = [Book::class, Character::class, House::class], version = 2, exportSchema = false)
+@Database(entities = [Book::class, Character::class, House::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun bookDao(): BookDao

@@ -1,6 +1,5 @@
 package com.pabcalvid.proyectofinalapi.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,7 +14,7 @@ import com.pabcalvid.proyectofinalapi.data.local.Book
 import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
-fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Book) -> Unit) {
+fun FavoritesBooksScreen(viewModel: ViewModel) {
     val favoriteBooks by viewModel.favoriteBooks.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -46,7 +45,7 @@ fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Book) -> Unit) {
                 modifier = Modifier.weight(1f)
             ) {
                 items(favoriteBooks) { book ->
-                    FavoriteItem(book, onBookClick)
+                    FavoriteItem(book)
                 }
             }
         }
@@ -54,12 +53,11 @@ fun FavoritesBooksScreen(viewModel: ViewModel, onBookClick: (Book) -> Unit) {
 }
 
 @Composable
-fun FavoriteItem(book: Book, onBookClick: (Book) -> Unit) {
+fun FavoriteItem(book: Book) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable { onBookClick(book) },
+            .padding(vertical = 8.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

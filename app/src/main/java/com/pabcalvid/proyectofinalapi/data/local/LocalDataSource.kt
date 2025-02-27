@@ -3,32 +3,38 @@ package com.pabcalvid.proyectofinalapi.data.local
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LocalDataSource(applicationContext: Context) {
+@Singleton
+class LocalDataSource @Inject constructor(applicationContext: Context) {
+
     private val db: AppDataBase = AppDataBase.getDatabase(applicationContext)
     private val bookDao = db.bookDao()
     private val characterDao = db.characterDao()
-    private val houseDao = db.houseDao() // Manejo de casas
+    private val houseDao = db.houseDao()
 
     // 📚 **Libros**
-    fun getAllBooks(): Flow<List<Book>> {
-        return bookDao.getAll()
-    }
+    fun getAllBooks(): Flow<List<Book>> = bookDao.getAll()
 
-    fun getFavorites(): Flow<List<Book>> {
-        return bookDao.getFavorites() // Obtiene solo los libros favoritos
-    }
-
-    fun getBookByNum(num: Int): Flow<Book?> {
-        return bookDao.getBookByNum(num)
-    }
+    suspend fun getBookByNum(num: Int): Book? = bookDao.getBookByNum(num)
 
     suspend fun insertBook(book: Book) {
-        bookDao.insert(book)
+        try {
+            bookDao.insert(book)
+            Log.d("LocalDataSource", "Libro insertado: ${book.title}")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error insertando libro", e)
+        }
     }
 
     suspend fun deleteBook(book: Book) {
-        bookDao.delete(book)
+        try {
+            bookDao.delete(book)
+            Log.d("LocalDataSource", "Libro eliminado: ${book.title}")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error eliminando libro", e)
+        }
     }
 
     suspend fun updateFavoriteStatus(num: Int, isFavorite: Boolean) {
@@ -41,48 +47,66 @@ class LocalDataSource(applicationContext: Context) {
     }
 
     // 🧙 **Personajes**
-    fun getAllCharacters(): Flow<List<Character>> {
-        return characterDao.getAll()
-    }
+    fun getAllCharacters(): Flow<List<Character>> = characterDao.getAll()
+
+    suspend fun getCharacterByName(nickname: String): Character? = characterDao.getCharacterByNickname(nickname)
 
     suspend fun insertCharacter(character: Character) {
         try {
-            val result = characterDao.insert(character)
-            Log.d("LocalDataSource", "Insert character result: $result")
+            characterDao.insert(character)
+            Log.d("LocalDataSource", "Personaje insertado: ${character.nickname}")
         } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error inserting character", e)
+            Log.e("LocalDataSource", "Error insertando personaje", e)
         }
     }
 
     suspend fun deleteCharacter(character: Character) {
         try {
             characterDao.delete(character)
-            Log.d("LocalDataSource", "Character deleted")
+            Log.d("LocalDataSource", "Personaje eliminado: ${character.nickname}")
         } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error deleting character", e)
+            Log.e("LocalDataSource", "Error eliminando personaje", e)
+        }
+    }
+
+    suspend fun updateFavoriteStatus(nickname: String, isFavorite: Boolean) {
+        try {
+            characterDao.updateFavoriteStatus(nickname, isFavorite)
+            Log.d("LocalDataSource", "Personaje actualizado como favorito: $isFavorite")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error actualizando favorito del personaje", e)
         }
     }
 
     // 🏰 **Casas**
-    fun getAllHouses(): Flow<List<House>> {
-        return houseDao.getAll()
-    }
+    fun getAllHouses(): Flow<List<House>> = houseDao.getAll()
+
+    suspend fun getHouseByName(house: String): House? = houseDao.getHouseByHouse(house)
 
     suspend fun insertHouse(house: House) {
         try {
-            val result = houseDao.insert(house)
-            Log.d("LocalDataSource", "Insert house result: $result")
+            houseDao.insert(house)
+            Log.d("LocalDataSource", "Casa insertada: ${house.house}")
         } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error inserting house", e)
+            Log.e("LocalDataSource", "Error insertando casa", e)
         }
     }
 
     suspend fun deleteHouse(house: House) {
         try {
             houseDao.delete(house)
-            Log.d("LocalDataSource", "House deleted")
+            Log.d("LocalDataSource", "Casa eliminada: ${house.house}")
         } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error deleting house", e)
+            Log.e("LocalDataSource", "Error eliminando casa", e)
+        }
+    }
+
+    suspend fun updateFavoriteStatus2(house: String, isFavorite: Boolean) {
+        try {
+            houseDao.updateFavoriteStatus2(house, isFavorite)
+            Log.d("LocalDataSource", "Personaje actualizado como favorito: $isFavorite")
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Error actualizando favorito del personaje", e)
         }
     }
 }

@@ -1,12 +1,13 @@
 package com.pabcalvid.proyectofinalapi.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "books", indices = [Index(value = ["index"], unique = true)])
 data class Book(
-    @PrimaryKey(autoGenerate = true) val id: Int?,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val num: Int,
     val title: String,
     val originalTitle: String,
@@ -15,5 +16,5 @@ data class Book(
     val pages: Int,
     val cover: String,
     val index: Int,
-    var isFavorite: Boolean = false
+    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean = false
 )

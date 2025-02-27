@@ -14,11 +14,11 @@ data class HouseDTO(
 
 fun HouseDTO.toLocalEntity() =
     House(
-        id = null,
         house = house,
         emoji = emoji,
         founder = founder,
         colors = colors,
         animal = animal,
-        index = index
+        index = index,
+        isFavorite = false
     )

@@ -50,7 +50,6 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
 
             if (book != null) {
                 BookDetailsScreen(
-                    book = book,
                     viewModel = mainViewModel
                 )
             }
@@ -60,13 +59,13 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         composable(route = Destinations.CharacterRoute.route) {
             CharacterScreen(
                 viewModel = mainViewModel,
-                onCharacterClick = { characterIndex ->
-                    if (characterIndex != -1) {
-                        navController.navigate(Destinations.CharacterDetailsRoute.createRoute(characterIndex))
+                onCharacterClick = { characterNickname ->
+                    if (characterNickname.isNotEmpty()) {
+                        navController.navigate(Destinations.CharacterDetailsRoute.createRoute(characterNickname))
                     }
                 },
                 onRandomCharacterClick = { character ->
-                    navController.navigate(Destinations.CharacterDetailsRoute.createRoute(character.index))
+                    navController.navigate(Destinations.CharacterDetailsRoute.createRoute(character.nickname))
                 },
             )
         }
@@ -74,54 +73,71 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         // Pantalla de detalles de un personaje
         composable(
             route = Destinations.CharacterDetailsRoute.route,
-            arguments = listOf(navArgument("characterIndex") { defaultValue = -1 })
+            arguments = listOf(navArgument("nickname") { defaultValue = "" }) // Cambiado de "characterIndex" a "characterNickname"
         ) { backStackEntry ->
-            val characterIndex = backStackEntry.arguments?.getInt("characterIndex") ?: -1
-            val character = mainViewModel.getCharacterByIndex(characterIndex)
+            val characterNickname = backStackEntry.arguments?.getString("nickname") ?: ""
+            val character = mainViewModel.getCharacterByNickname(characterNickname) // Usar nickname en lugar de índice
 
             if (character != null) {
                 CharacterDetailsScreen(
-                    character = character,
+                    viewModel = mainViewModel
                 )
             }
         }
 
-        // NUEVA: Pantalla de lista de casas
         composable(route = Destinations.HouseRoute.route) {
             HousesScreen(
                 viewModel = mainViewModel,
-                onHouseClick = { houseIndex ->
-                    if (houseIndex != -1) {
-                        navController.navigate(Destinations.HouseDetailsRoute.createRoute(houseIndex))
+                onHouseClick = { house ->
+                    if (house.isNotEmpty()) {
+                        navController.navigate(Destinations.HouseDetailsRoute.createRoute(house))
                     }
                 },
                 onRandomHouseClick = { house ->
-                    navController.navigate(Destinations.HouseDetailsRoute.createRoute(house.index))
+                    navController.navigate(Destinations.HouseDetailsRoute.createRoute(house.house))
                 },
             )
         }
 
-        // NUEVA: Pantalla de detalles de una casa
         composable(
             route = Destinations.HouseDetailsRoute.route,
-            arguments = listOf(navArgument("houseIndex") { defaultValue = -1 })
+            arguments = listOf(navArgument("house") { defaultValue = "" })
         ) { backStackEntry ->
-            val houseIndex = backStackEntry.arguments?.getInt("houseIndex") ?: -1
-            val house = mainViewModel.getHouseByIndex(houseIndex)
+            val nameHouse = backStackEntry.arguments?.getString("house") ?: ""
+            val house = mainViewModel.getHouseByHouse(nameHouse)
 
             if (house != null) {
                 HouseDetailsScreen(
-                    house = house,
+                    viewModel = mainViewModel
                 )
             }
         }
 
         composable(route = Destinations.FavoritesRoute.route) {
             FavoritesBooksScreen(
-                viewModel = mainViewModel,
-                onBookClick = { mainViewModel.deleteFavoriteBook(it) }
+                viewModel = mainViewModel
             )
         }
 
+        composable(route = Destinations.FavoritesCharactersRoute.route) {
+            FavoritesCharactersScreen(
+                viewModel = mainViewModel
+            )
+        }
+
+        composable(route = Destinations.FavoritesHousesRoute.route) {
+            FavoriteHousesScreen(
+                viewModel = mainViewModel
+            )
+        }
+
+        composable(route = Destinations.FavoritesSelectionRoute.route) {
+            FavoritesSelectionScreen(
+                viewModel = mainViewModel,
+                onBooks = { navController.navigate(Destinations.FavoritesRoute.route) },
+                onCharacters = { navController.navigate(Destinations.FavoritesCharactersRoute.route) },
+                onHouses = { navController.navigate(Destinations.FavoritesHousesRoute.route) }
+            )
+        }
     }
 }

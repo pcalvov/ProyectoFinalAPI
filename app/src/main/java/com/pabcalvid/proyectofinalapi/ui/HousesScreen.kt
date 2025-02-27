@@ -29,9 +29,9 @@ fun HousesScreen(
 
     LaunchedEffect(randomHouse) {
         randomHouse?.let { house ->
-            viewModel.setSelectedHouse(house) // Guardamos la casa antes de navegar
+            viewModel.setSelectedHouse(house)
             onRandomHouseClick(house)
-            viewModel.clearRandomHouse() // ❗ Se limpia después de la navegación
+            viewModel.clearRandomHouse()
         }
     }
 

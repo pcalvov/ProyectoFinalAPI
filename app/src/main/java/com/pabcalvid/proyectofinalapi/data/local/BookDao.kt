@@ -7,23 +7,23 @@ import kotlinx.coroutines.flow.Flow
 interface BookDao {
 
     @Query("SELECT * FROM books")
-    fun getAll(): Flow<List<Book>> // Obtiene todos los libros en tiempo real
+    fun getAll(): Flow<List<Book>>
 
     @Query("SELECT * FROM books WHERE isFavorite = 1")
-    fun getFavorites(): Flow<List<Book>> // Obtiene solo los favoritos
+    fun getFavorites(): Flow<List<Book>>
 
     @Query("SELECT * FROM books WHERE num = :num LIMIT 1")
-    suspend fun getBookByNum(num: Int): Book? // Devuelve un solo libro (sin Flow)
+    suspend fun getBookByNum(num: Int): Book?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(book: Book): Long // Retorna el ID insertado
+    suspend fun insert(book: Book): Long
 
     @Update
-    suspend fun update(book: Book) // Actualiza un libro completo
+    suspend fun update(book: Book)
 
     @Delete
-    suspend fun delete(book: Book) // Borra un libro específico
+    suspend fun delete(book: Book)
 
     @Query("UPDATE books SET isFavorite = :isFavorite WHERE num = :num")
-    suspend fun updateFavoriteStatus(num: Int, isFavorite: Boolean) // Alternativa si solo se actualiza el favorito
+    suspend fun updateFavoriteStatus(num: Int, isFavorite: Boolean)
 }

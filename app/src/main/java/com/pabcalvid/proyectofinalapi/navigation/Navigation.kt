@@ -1,6 +1,5 @@
 package com.pabcalvid.proyectofinalapi.navigation
 
-import BookDetailsScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,10 +17,9 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         // Pantalla principal
         composable(route = Destinations.MainRoute.route) {
             MainScreen(
-                viewModel = mainViewModel,
                 onBooks = { navController.navigate(Destinations.BookRoute.route) },
                 onCharacters = { navController.navigate(Destinations.CharacterRoute.route) },
-                onHouses = { navController.navigate(Destinations.HouseRoute.route) } // Ahora navega a HousesScreen
+                onHouses = { navController.navigate(Destinations.HouseRoute.route) }
             )
         }
 
@@ -73,10 +71,10 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
         // Pantalla de detalles de un personaje
         composable(
             route = Destinations.CharacterDetailsRoute.route,
-            arguments = listOf(navArgument("nickname") { defaultValue = "" }) // Cambiado de "characterIndex" a "characterNickname"
+            arguments = listOf(navArgument("nickname") { defaultValue = "" })
         ) { backStackEntry ->
             val characterNickname = backStackEntry.arguments?.getString("nickname") ?: ""
-            val character = mainViewModel.getCharacterByNickname(characterNickname) // Usar nickname en lugar de índice
+            val character = mainViewModel.getCharacterByNickname(characterNickname)
 
             if (character != null) {
                 CharacterDetailsScreen(
@@ -133,11 +131,14 @@ fun Navigation(navController: NavHostController, mainViewModel: ViewModel) {
 
         composable(route = Destinations.FavoritesSelectionRoute.route) {
             FavoritesSelectionScreen(
-                viewModel = mainViewModel,
                 onBooks = { navController.navigate(Destinations.FavoritesRoute.route) },
                 onCharacters = { navController.navigate(Destinations.FavoritesCharactersRoute.route) },
                 onHouses = { navController.navigate(Destinations.FavoritesHousesRoute.route) }
             )
+        }
+
+        composable(route = Destinations.AuthRoute.route) {
+            AuthorScreen()
         }
     }
 }

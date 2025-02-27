@@ -14,7 +14,7 @@ class LocalDataSource @Inject constructor(applicationContext: Context) {
     private val characterDao = db.characterDao()
     private val houseDao = db.houseDao()
 
-    // 📚 **Libros**
+    //Libros
     fun getAllBooks(): Flow<List<Book>> = bookDao.getAll()
 
     suspend fun getBookByNum(num: Int): Book? = bookDao.getBookByNum(num)
@@ -46,7 +46,7 @@ class LocalDataSource @Inject constructor(applicationContext: Context) {
         }
     }
 
-    // 🧙 **Personajes**
+    //Personajes
     fun getAllCharacters(): Flow<List<Character>> = characterDao.getAll()
 
     suspend fun getCharacterByName(nickname: String): Character? = characterDao.getCharacterByNickname(nickname)
@@ -78,7 +78,7 @@ class LocalDataSource @Inject constructor(applicationContext: Context) {
         }
     }
 
-    // 🏰 **Casas**
+    //Casas
     fun getAllHouses(): Flow<List<House>> = houseDao.getAll()
 
     suspend fun getHouseByName(house: String): House? = houseDao.getHouseByHouse(house)
@@ -104,9 +104,9 @@ class LocalDataSource @Inject constructor(applicationContext: Context) {
     suspend fun updateFavoriteStatus2(house: String, isFavorite: Boolean) {
         try {
             houseDao.updateFavoriteStatus2(house, isFavorite)
-            Log.d("LocalDataSource", "Personaje actualizado como favorito: $isFavorite")
+            Log.d("LocalDataSource", "Casa actualizada como favorito: $isFavorite")
         } catch (e: Exception) {
-            Log.e("LocalDataSource", "Error actualizando favorito del personaje", e)
+            Log.e("LocalDataSource", "Error actualizando favorito de casa", e)
         }
     }
 }

@@ -21,13 +21,13 @@ interface HouseDao {
     suspend fun getHouseByHouse(house: String): House?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(house: House) // Inserta un personaje
+    suspend fun insert(house: House)
 
     @Update
-    suspend fun update(house: House) // Actualiza un personaje
+    suspend fun update(house: House)
 
     @Delete
-    suspend fun delete(house: House) // Elimina un personaje
+    suspend fun delete(house: House)
 
     @Query("UPDATE houses SET isFavorite = :isFavorite WHERE house = :house")
     suspend fun updateFavoriteStatus2(house: String, isFavorite: Boolean)

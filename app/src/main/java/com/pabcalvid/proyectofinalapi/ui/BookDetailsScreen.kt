@@ -1,3 +1,5 @@
+package com.pabcalvid.proyectofinalapi.ui
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -49,7 +51,6 @@ fun BookDetailsScreen(viewModel: ViewModel) {
             Text("Número de Páginas: ${book!!.pages}", style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de favorito
             IconButton(
                 onClick = {
                     viewModel.toggleFavoriteBook(book!!)
@@ -58,7 +59,7 @@ fun BookDetailsScreen(viewModel: ViewModel) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "Favorito",
-                    tint = if (isFavorite) Color.Red else Color.Gray // Cambia el color inmediatamente
+                    tint = if (isFavorite) Color.Red else Color.Gray
                 )
             }
         }

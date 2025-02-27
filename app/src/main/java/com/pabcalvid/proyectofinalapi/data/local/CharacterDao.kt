@@ -7,23 +7,23 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterDao {
 
     @Query("SELECT * FROM characters")
-    fun getAll(): Flow<List<Character>> // Obtiene todos los personajes
+    fun getAll(): Flow<List<Character>>
 
     @Query("SELECT * FROM characters WHERE isFavorite = 1")
-    fun getFavorites(): Flow<List<Character>> // Obtiene solo los favoritos
+    fun getFavorites(): Flow<List<Character>>
 
     @Query("SELECT * FROM characters WHERE nickname = :nickname")
-    suspend fun getCharacterByNickname(nickname: String): Character? // Obtiene un personaje específico
+    suspend fun getCharacterByNickname(nickname: String): Character?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(character: Character) // Inserta un personaje
+    suspend fun insert(character: Character)
 
     @Update
-    suspend fun update(character: Character) // Actualiza un personaje
+    suspend fun update(character: Character)
 
     @Delete
-    suspend fun delete(character: Character) // Elimina un personaje
+    suspend fun delete(character: Character)
 
     @Query("UPDATE characters SET isFavorite = :isFavorite WHERE nickname = :nickname")
-    suspend fun updateFavoriteStatus(nickname: String, isFavorite: Boolean) // Actualiza solo el favorito
+    suspend fun updateFavoriteStatus(nickname: String, isFavorite: Boolean)
 }

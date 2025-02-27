@@ -2,6 +2,7 @@ package com.pabcalvid.proyectofinalapi.navigation
 
 sealed class Destinations(val route: String) {
     object MainRoute : Destinations("main")
+    object AuthRoute : Destinations("author")
     object BookRoute : Destinations("books")
     object BookDetailsRoute : Destinations("bookDetails/{bookIndex}") {
         fun createRoute(bookIndex: Int) = "bookDetails/$bookIndex"
@@ -17,7 +18,6 @@ sealed class Destinations(val route: String) {
         fun createRoute(house: String) = "houseDetails/$house"
     }
 
-    // 📌 Nueva ruta para favoritos
     object FavoritesRoute : Destinations("favorites")
 
     object FavoritesCharactersRoute : Destinations("favorites_characters")

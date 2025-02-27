@@ -16,11 +16,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pabcalvid.proyectofinalapi.R
-import com.pabcalvid.proyectofinalapi.viewModel.ViewModel
 
 @Composable
 fun FavoritesSelectionScreen(
-    viewModel: ViewModel,
     onBooks: () -> Unit,
     onCharacters: () -> Unit,
     onHouses: () -> Unit

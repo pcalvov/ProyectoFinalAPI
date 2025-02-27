@@ -29,9 +29,9 @@ fun CharacterScreen(
 
     LaunchedEffect(randomCharacter) {
         randomCharacter?.let { character ->
-            viewModel.setSelectedCharacter(character) // Asegurar que se almacene antes de navegar
+            viewModel.setSelectedCharacter(character)
             onRandomCharacterClick(character)
-            viewModel.clearRandomCharacter() // ❗Ahora se limpia después de la navegación
+            viewModel.clearRandomCharacter()
         }
     }
 
